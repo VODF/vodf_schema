@@ -5,9 +5,10 @@ An implementation of the VODF FITS file format schema using the
 
 This package will provide:
 
-- self-documenting schema definitions
+- self-documenting schema definitions, including sphinx (HTML/PDF) and FITS template output.
 - a validation api and command-line tool capable of checking existing FITS files
   for compliance with VODF
+- installation via pip, conda, and as a Docker container
 
 ## Development
 
