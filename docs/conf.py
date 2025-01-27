@@ -11,8 +11,8 @@ https://www.sphinx-doc.org/en/master/usage/configuration.html
 import vodf_schema
 
 project = "vodf_schema"
-copyright = "CTAO"
-author = "CTAO Computing Department"
+copyright = "VODF, CTAO"  # TODO:  add other partners
+author = "VODF Lead Editor Team"
 version = vodf_schema.__version__
 # The full version, including alpha/beta/rc tags.
 release = version
@@ -47,16 +47,19 @@ default_role = "py:obj"
 # intersphinx allows referencing other packages sphinx docs
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
+    "astropy": ("https://docs.astropy.org/en/stable", None),
+    "numpy": ("https://numpy.org/doc/stable/", None),
+
 }
 
 # -- Options for HTML output -------------------------------------------------
 
-html_theme = "ctao"
+html_theme = "pydata_sphinx_theme"
 html_theme_options = dict(
     navigation_with_keys=False,
     # setup for displaying multiple versions, also see setup in .gitlab-ci.yml
     switcher=dict(
-        json_url="http://cta-computing.gitlab-pages.cta-observatory.org/documentation/python-project-template/versions.json",  # noqa: E501
+        json_url="http://REPLACE_WITH_DOCS_URL/versions.json",  # noqa: E501
         version_match="latest" if ".dev" in version else f"v{version}",
     ),
     navbar_center=["version-switcher", "navbar-nav"],
