@@ -3,8 +3,8 @@ requires = ["setuptools>=65", "setuptools_scm[toml]>=8"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ctao-python-project-template"
-description = "Template for a pure python package"
+name = "vodf_schema"
+description = "FITS schema definitions for VODF"
 readme = "README.md"
 license = {text = "BSD-3-Clause"}
 authors = [
