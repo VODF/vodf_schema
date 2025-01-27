@@ -2,5 +2,5 @@
 
 
 def test_metadata_classes():
-    # just importing them will trigger the schema checks
+    # just importing them will trigger the schema checks.
     pass

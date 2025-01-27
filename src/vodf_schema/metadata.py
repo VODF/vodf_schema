@@ -11,12 +11,12 @@ from .references import CITE
 URL = "https://PUT_VODF_DOCUMENTATION_URL_FOR_THIS_VERSION_HERE/"
 
 __all__ = [
-    "VODFHDU",
+    "FormatSpec",
     "ReferencePosition",
 ]
 
 
-class VODFHDU(HeaderSchema):
+class FormatSpec(HeaderSchema):
     """Required headers for VODF HDUs."""
 
     HDUCLASS = HeaderCard(allowed_values="VODF")
