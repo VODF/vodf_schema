@@ -10,7 +10,7 @@ license = {text = "BSD-3-Clause"}
 authors = [
     {name = "Karl Kosack", email = "karl.kosack@cea.fr"},
     {name = "Bruno Khelifi", email = "khelifi@apc.in2p3.fr"},
-    {name = "Jutta Schnabel" email = "jutta.schnabel@fau.de"},
+    {name = "Jutta Schnabel", email = "jutta.schnabel@fau.de"},
     {name = "Laura Olivera-Nieto", email = "Laura.Olivera-Nieto@mpi-hd.mpg.de"},
 ]
 
