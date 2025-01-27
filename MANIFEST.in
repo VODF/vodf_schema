@@ -1,0 +1,2 @@
+prune src/vodf_schema/_dev_version
+prune .github
