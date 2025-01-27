@@ -8,24 +8,27 @@ description = "Template for a pure python package"
 readme = "README.md"
 license = {text = "BSD-3-Clause"}
 authors = [
-    {name = "Maximilian Linhoff", email = "maximilian.linhoff@tu-dortmund.de"},
+    {name = "Karl Kosack", email = "karl.kosack@cea.fr"},
+    {name = "Bruno Khelifi", email = "khelifi@apc.in2p3.fr"},
+    {name = "Jutta Schnabel" email = "jutta.schnabel@fau.de"},
+    {name = "Laura Olivera-Nieto", email = "Laura.Olivera-Nieto@mpi-hd.mpg.de"},
 ]
 
 requires-python = ">=3.10"
 dependencies = [
     "numpy",
+    "fits_schema > 0.5"
 ]
 
 # needed for setuptools_scm, we don"t define a static version
 dynamic = ["version"]
 
 [project.urls]
-repository = "https://gitlab.cta-observatory.org/cta-computing/documentation/python-project-template"
-documentation = "http://cta-computing.gitlab-pages.cta-observatory.org/documentation/python-project-template"
+repository = "https://github.com/VODF/fits_schema"
+documentation = none
 
 # Command-line scripts mapping the name of the tool to the import and function to execute
 [project.scripts]
-fibonacci = "vodf_schema.cli.fib:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -39,7 +42,6 @@ test = [
 doc = [
   "sphinx",
   "numpydoc",
-  "ctao-sphinx-theme~=0.1.2",
   "sphinx-changelog",
 ]
 dev = [
@@ -49,7 +51,7 @@ dev = [
 
 # we can use self-references to simplify all, needs to match project.name defined above
 all = [
-  "ctao-python-project-template[test,doc,dev]",
+  "vodf_schema[test,doc,dev]",
 ]
 
 [tool.setuptools_scm]
@@ -64,7 +66,7 @@ underlines = ["-", "~", "^"]
 # Let towncrier create proper links to the merged MR.
 # By default, towncrier connects everything to issues.
 # We rather want to connect it to merge request
-issue_format = "`!{issue} <https://gitlab.cta-observatory.org/cta-computing/documentation/python-project-template/-/merge_requests/{issue}>`__"
+issue_format = "`!{issue} <https://https://github.com/VODF/vodf_schema/issues/{issue}>`__"
 
 [tool.towncrier.fragment.feature]
     name = "New Features"
