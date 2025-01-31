@@ -3,7 +3,7 @@
 """Common metadata headers for VODF."""
 
 from astropy import units as u
-from fits_schema import BinaryTableHeader, Header, HeaderCard
+from fits_schema import Header, HeaderCard
 
 from .references import CITE
 from .version import __version__ as vodf_version
@@ -16,7 +16,7 @@ __all__ = [
 ]
 
 
-class VODFFormat(BinaryTableHeader):
+class VODFFormat(Header):
     """Required headers for VODF HDUs."""
 
     HDUCLASS = HeaderCard(allowed_values="VODF")

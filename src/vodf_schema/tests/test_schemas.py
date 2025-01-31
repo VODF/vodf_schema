@@ -15,3 +15,7 @@ def test_import_level3():
 
 def test_import_metadata():
     """Test the schemas defined in level1.py."""
+
+
+def test_import_hdus():
+    """Test the schemas defined in level1.py."""
