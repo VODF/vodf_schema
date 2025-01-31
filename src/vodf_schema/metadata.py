@@ -3,20 +3,20 @@
 """Common metadata headers for VODF."""
 
 from astropy import units as u
-from fits_schema import HeaderCard, HeaderSchema
+from fits_schema import BinaryTableHeader, Header, HeaderCard
 
-from . import __version__ as vodf_version
 from .references import CITE
+from .version import __version__ as vodf_version
 
 URL = "https://PUT_VODF_DOCUMENTATION_URL_FOR_THIS_VERSION_HERE/"
 
 __all__ = [
-    "FormatSpec",
+    "VODFFormat",
     "ReferencePosition",
 ]
 
 
-class FormatSpec(HeaderSchema):
+class VODFFormat(BinaryTableHeader):
     """Required headers for VODF HDUs."""
 
     HDUCLASS = HeaderCard(allowed_values="VODF")
@@ -24,12 +24,11 @@ class FormatSpec(HeaderSchema):
     HDUVERS = HeaderCard(allowed_values={vodf_version})
 
 
-class ReferencePosition(HeaderSchema):
-    """Reference position of the observatory, for time and coordinates."""
+class ReferencePosition(Header):
+    """Reference position of the observatory, for time and coordinates.
 
-    # TODO: do we need to support other reference systems for satellites? See
-    # fits spec section 9.2.3. Can also specify OBSGEO-X, OBSGEO-Y, OBSGEO-Z,
-    # for example, or an ephemeris file
+    This version of VODF supports only Earth-centered locations.
+    """
 
     TREFPOS = HeaderCard(
         description="Code for the spatial location at which the observation time is valid",
@@ -39,7 +38,7 @@ class ReferencePosition(HeaderSchema):
     )
 
     OBSGEO_B = HeaderCard(
-        name="OBSGEO-B",
+        keyword="OBSGEO-B",
         description="the latitude of the observation, with North positive",
         type_=float,
         unit=u.deg,
@@ -47,7 +46,7 @@ class ReferencePosition(HeaderSchema):
         reference=CITE["fits_v4"],
     )
     OBSGEO_L = HeaderCard(
-        name="OBSGEO-L",
+        keyword="OBSGEO-L",
         description="the longitide of the observation, with East positive",
         type_=float,
         unit=u.deg,
@@ -55,11 +54,11 @@ class ReferencePosition(HeaderSchema):
         reference=CITE["fits_v4"],
     )
     OBSGEO_H = HeaderCard(
-        name="OBSGEO-H",
+        keyword="OBSGEO-H",
         description="the altitude of the observation",
         type_=float,
         unit=u.m,
-        ucd="pos.earth.alt",
+        ucd="pos.earth.altitude",
         reference=CITE["fits_v4"],
     )
 
@@ -68,16 +67,16 @@ class ReferencePosition(HeaderSchema):
 #  Copied from GADF so far, need to update:
 
 
-class CoordinateSystem(HeaderSchema):
+class CoordinateSystem(Header):
     """Coordinate system definition."""
 
     EQUINOX = HeaderCard(
-        description="Coordinate epoch",
+        description="Coordinate epoch. Optional since implied by RADECSYS",
         reference=CITE["fits_v4"],
         type_=float,
         unit=u.yr,
         allowed_values=2000.0,
-        required=False,  # TODO: why?
+        required=False,
     )
     RADECSYS = HeaderCard(
         description="Coordinate stellar reference frame",
@@ -87,7 +86,7 @@ class CoordinateSystem(HeaderSchema):
     )
 
 
-class TimeDefinition(HeaderSchema):
+class TimeDefinition(Header):
     """Header keywords for the definition of time columns."""
 
     # All keywords are required here. Add this to the headerschema when a table
@@ -111,7 +110,7 @@ class TimeDefinition(HeaderSchema):
     )
 
 
-class Object(HeaderSchema):
+class Object(Header):
     """Name and coordinates of observerd object, if any."""
 
     OBJECT = HeaderCard(required=False, type_=str)
@@ -119,7 +118,7 @@ class Object(HeaderSchema):
     DEC_OBJ = HeaderCard(required=False, type_=float)
 
 
-class DataProductHeaders(HeaderSchema):
+class DataProductHeaders(Header):
     """Identify this HDU."""
 
     DATE = HeaderCard(
@@ -129,11 +128,11 @@ class DataProductHeaders(HeaderSchema):
     )
 
 
-class ObservationHeaders(HeaderSchema):
+class ObservationHeaders(Header):
     """Describes an observation."""
 
 
-class CreatorHeaders(HeaderSchema):
+class CreatorHeaders(Header):
     """The creator of this data product."""
 
     ORIGIN = HeaderCard(
