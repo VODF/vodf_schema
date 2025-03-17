@@ -12,7 +12,7 @@ from fits_schema import (
 )
 
 from ..metadata import SpatialReferenceHeader, TemporalReferenceHeader, VODFFormatHeader
-from ..references import CITE
+from ..references import Ref
 
 __all__ = ["EventList"]
 
@@ -28,12 +28,12 @@ class EventList(BinaryTable):
     ):
         EXTNAME = HeaderCard(allowed_values=["event-list"], type_=str)
         HDUCLAS1 = HeaderCard(
-            allowed_values="OGIP", description="OGIP-compatible", reference=CITE["ogip"]
+            allowed_values="OGIP", description="OGIP-compatible", reference=Ref.ogip
         )
         HDUCLAS2 = HeaderCard(
             allowed_values="EVENTS",
             description="event-list table",
-            reference=CITE["ogip"],
+            reference=Ref.ogip,
         )
 
     # Mandatory Columns
@@ -44,23 +44,23 @@ class EventList(BinaryTable):
         description="Event time of arrival, as an MET",
         unit=u.s,
         ucd="time",
-        reference=CITE["ogip_event_lists"],
+        reference=Ref.ogip_event_lists,
     )
     RA = Double(
         description="Reconstructed Right Ascension of event point-of-origin.",
         unit=u.deg,
         ucd="pos.eq.ra;stat.fit",
-        reference=CITE["ogip_event_lists"],
+        reference=Ref.ogip_event_lists,
     )
     DEC = Double(
         description="Reconstructed Declination of event point-of-origin",
         unit=u.deg,
         ucd="pos.eq.dec;stat.fit",
-        reference=CITE["ogip_event_lists"],
+        reference=Ref.ogip_event_lists,
     )
     ENERGY = Double(
         description="Reconstructed event energy",
         unit=u.TeV,
         ucd="phys.energy;stat.fit",
-        reference=CITE["ogip_event_lists"],
+        reference=Ref.ogip_event_lists,
     )

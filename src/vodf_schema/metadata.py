@@ -5,7 +5,7 @@
 from astropy import units as u
 from fits_schema import Header, HeaderCard
 
-from .references import CITE
+from .references import Ref
 from .version import __version__ as vodf_version
 
 URL = "https://PUT_VODF_DOCUMENTATION_URL_FOR_THIS_VERSION_HERE/"
@@ -32,7 +32,7 @@ class SpatialReferenceHeader(Header):
 
     TREFPOS = HeaderCard(
         description="Code for the spatial location at which the observation time is valid",
-        reference=CITE["fits_v4"],
+        reference=Ref.fits_v4,
         type_=str,
         allowed_values=["TOPOCENTER"],
     )
@@ -43,7 +43,7 @@ class SpatialReferenceHeader(Header):
         type_=float,
         unit=u.deg,
         ucd="pos.earth.lat",
-        reference=CITE["fits_v4"],
+        reference=Ref.fits_v4,
     )
     OBSGEO_L = HeaderCard(
         keyword="OBSGEO-L",
@@ -51,7 +51,7 @@ class SpatialReferenceHeader(Header):
         type_=float,
         unit=u.deg,
         ucd="pos.earth.lon",
-        reference=CITE["fits_v4"],
+        reference=Ref.fits_v4,
     )
     OBSGEO_H = HeaderCard(
         keyword="OBSGEO-H",
@@ -59,7 +59,7 @@ class SpatialReferenceHeader(Header):
         type_=float,
         unit=u.m,
         ucd="pos.earth.altitude",
-        reference=CITE["fits_v4"],
+        reference=Ref.fits_v4,
     )
 
 
@@ -70,20 +70,20 @@ class TemporalReferenceHeader(Header):
     # precision required?
     MJDREFI = HeaderCard(
         description="the integer part of reference time in MJD",
-        reference=CITE["fits_v4"],
+        reference=Ref.fits_v4,
         type_=int,
         unit="d",
     )
     MJDREFF = HeaderCard(
         description="the fractional part of reference time in MJD",
-        reference=CITE["fits_v4"],
+        reference=Ref.fits_v4,
         type_=float,
         unit="d",
     )
     DATEREF = HeaderCard(
         required=False,
         description="String representation of the reference time in ISO-8601 format",
-        reference=CITE["fits_v4"],
+        reference=Ref.fits_v4,
         type_=str,
         examples=["2025-01-01 00:00:00"],
     )
@@ -96,20 +96,20 @@ class TemporalReferenceHeader(Header):
             "that do not have an implied time unit (e.g. the JD, MJD epochs)."
         ),
         required=False,
-        reference=CITE["fits_v4"],
+        reference=Ref.fits_v4,
         type_=str,
         allowed_values=["s"],
     )
 
     TIMESYS = HeaderCard(
         description="the time scale of the time-related keywords. For simulated data, use LOCAL.",
-        reference=CITE["fits_v4"],
+        reference=Ref.fits_v4,
         type_=str,
         allowed_values=["TT", "UTC", "UT1", "TAI", "GPS", "LOCAL"],
     )
     TREFPOS = HeaderCard(
         description="spatial location at which the observation time is valid.",
-        reference=CITE["fits_v4"],
+        reference=Ref.fits_v4,
         type_=str,
         allowed_values=[
             "TOPOCENTER",
@@ -135,7 +135,7 @@ class CoordinateSystemHeader(Header):
 
     EQUINOX = HeaderCard(
         description="Coordinate epoch. Optional since implied by RADECSYS",
-        reference=CITE["fits_v4"],
+        reference=Ref.fits_v4,
         type_=float,
         unit=u.yr,
         allowed_values=2000.0,
@@ -143,7 +143,7 @@ class CoordinateSystemHeader(Header):
     )
     RADECSYS = HeaderCard(
         description="Coordinate stellar reference frame",
-        reference=CITE["fits_v4"],
+        reference=Ref.fits_v4,
         type_=str,
         allowed_values={"ICRS", "FK5"},
     )
@@ -163,7 +163,7 @@ class DataProductHeaders(Header):
     DATE = HeaderCard(
         description="Date of HDU creation",
         type_=str,
-        reference=CITE["fits_v4"],
+        reference=Ref.fits_v4,
     )
 
 
@@ -177,11 +177,10 @@ class CreatorHeaders(Header):
     ORIGIN = HeaderCard(
         description="Organization or institution responsible for this file",
         type_=str,
-        reference=CITE["fits_v4"],
+        reference=Ref.fits_v4,
         examples=["CTAO", "KM3Net"],
     )
 
     CREATOR = HeaderCard(
-        description="Name of software used to create this file",
-        reference=CITE["heasarc"],
+        description="Name of software used to create this file", reference=Ref.heasarc
     )

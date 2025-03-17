@@ -11,7 +11,7 @@ from fits_schema import (
 )
 
 from .metadata import VODFFormatHeader
-from .references import CITE
+from .references import Ref
 
 
 class GroupingTable(BinaryTable):
@@ -23,11 +23,11 @@ class GroupingTable(BinaryTable):
     MEMBER_LOCATION = String(
         description="URI of file containing member HDU",
         required=False,
-        reference=CITE["fits_grouping"],
+        reference=Ref.fits_grouping,
     )
     MEMBER_NAME = String(
         description="EXTNAME keyword from the group member’s header.",
-        reference=CITE["fits_grouping"],
+        reference=Ref.fits_grouping,
     )
     MEMBER_VERSION = Int64(
         description=(
@@ -35,7 +35,7 @@ class GroupingTable(BinaryTable):
             "in a FITS file with the same type and name, i.e., "
             "the same values for XTENSION and EXTNAME. "
         ),
-        reference=CITE["fits_grouping"],
+        reference=Ref.fits_grouping,
     )
     MEMBER_LOCATION = String(
         description=(
@@ -46,7 +46,7 @@ class GroupingTable(BinaryTable):
             "value becomes invalid then this field may be filled with the FITS null value "
             "appropriate for the column type. "
         ),
-        reference=CITE["fits_grouping"],
+        reference=Ref.fits_grouping,
         required=False,
     )
     MEMBER_URI_TYPE = String(
@@ -56,6 +56,6 @@ class GroupingTable(BinaryTable):
             "for this column field are 'URL' for the Uniform Resource Locator and "
             "'URN' for the Uniform Resource Name."
         ),
-        reference=CITE["fits_grouping"],
+        reference=Ref.fits_grouping,
         required=False,
     )
