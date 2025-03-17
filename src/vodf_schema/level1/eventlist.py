@@ -5,12 +5,13 @@
 from astropy import units as u
 from fits_schema import (
     BinaryTable,
+    BinaryTableHeader,
     Double,
     HeaderCard,
     Int64,
 )
 
-from ..metadata import ReferencePosition, VODFFormat
+from ..metadata import SpatialReferenceHeader, TemporalReferenceHeader, VODFFormatHeader
 from ..references import CITE
 
 __all__ = ["EventList"]
@@ -19,7 +20,13 @@ __all__ = ["EventList"]
 class EventList(BinaryTable):
     """VODF Level-1 Event List HDU."""
 
-    class __headers__(VODFFormat, ReferencePosition):
+    class __header__(
+        BinaryTableHeader,
+        VODFFormatHeader,
+        SpatialReferenceHeader,
+        TemporalReferenceHeader,
+    ):
+        EXTNAME = HeaderCard(allowed_values=["event-list"], type_=str)
         HDUCLAS1 = HeaderCard(
             allowed_values="OGIP", description="OGIP-compatible", reference=CITE["ogip"]
         )

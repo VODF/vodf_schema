@@ -10,14 +10,14 @@ from fits_schema import (
     String,
 )
 
-from .metadata import VODFFormat
+from .metadata import VODFFormatHeader
 from .references import CITE
 
 
 class GroupingTable(BinaryTable):
     """A FITS Hieararchical Grouping table."""
 
-    class __headers__(BinaryTableHeader, VODFFormat):
+    class __headers__(BinaryTableHeader, VODFFormatHeader):
         EXTNAME = HeaderCard(allowed_values="GROUPING")
 
     MEMBER_LOCATION = String(

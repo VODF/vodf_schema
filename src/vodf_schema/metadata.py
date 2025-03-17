@@ -11,12 +11,12 @@ from .version import __version__ as vodf_version
 URL = "https://PUT_VODF_DOCUMENTATION_URL_FOR_THIS_VERSION_HERE/"
 
 __all__ = [
-    "VODFFormat",
-    "ReferencePosition",
+    "VODFFormatHeader",
+    "SpatialReferenceHeader",
 ]
 
 
-class VODFFormat(Header):
+class VODFFormatHeader(Header):
     """Required headers for VODF HDUs."""
 
     HDUCLASS = HeaderCard(allowed_values="VODF")
@@ -24,7 +24,7 @@ class VODFFormat(Header):
     HDUVERS = HeaderCard(allowed_values={vodf_version})
 
 
-class ReferencePosition(Header):
+class SpatialReferenceHeader(Header):
     """Reference position of the observatory, for time and coordinates.
 
     This version of VODF supports only Earth-centered locations.
@@ -63,11 +63,74 @@ class ReferencePosition(Header):
     )
 
 
+class TemporalReferenceHeader(Header):
+    """Defines the reference time, to which all time columns in the HDU are relative."""
+
+    # TODO: do we really need to split MJDREF into (I/F) parts? Is that level of
+    # precision required?
+    MJDREFI = HeaderCard(
+        description="the integer part of reference time in MJD",
+        reference=CITE["fits_v4"],
+        type_=int,
+        unit="d",
+    )
+    MJDREFF = HeaderCard(
+        description="the fractional part of reference time in MJD",
+        reference=CITE["fits_v4"],
+        type_=float,
+        unit="d",
+    )
+    DATEREF = HeaderCard(
+        required=False,
+        description="String representation of the reference time in ISO-8601 format",
+        reference=CITE["fits_v4"],
+        type_=str,
+        examples=["2025-01-01 00:00:00"],
+    )
+
+    # TODO: Is TIMEUNIT necessary? Time columns must have a unit field, so this
+    # may be redundant. It would only be useful for header values.
+    TIMEUNIT = HeaderCard(
+        description=(
+            "the time unit that shall apply to all time instances and durations "
+            "that do not have an implied time unit (e.g. the JD, MJD epochs)."
+        ),
+        required=False,
+        reference=CITE["fits_v4"],
+        type_=str,
+        allowed_values=["s"],
+    )
+
+    TIMESYS = HeaderCard(
+        description="the time scale of the time-related keywords. For simulated data, use LOCAL.",
+        reference=CITE["fits_v4"],
+        type_=str,
+        allowed_values=["TT", "UTC", "UT1", "TAI", "GPS", "LOCAL"],
+    )
+    TREFPOS = HeaderCard(
+        description="spatial location at which the observation time is valid.",
+        reference=CITE["fits_v4"],
+        type_=str,
+        allowed_values=[
+            "TOPOCENTER",
+            "GEOCENTER",
+            "BARYCENTER",
+            "RELOCATABLE",
+            "CUSTOM",
+        ],
+    )
+    TIMEDEL = HeaderCard(
+        required=False,
+        description="time resolution in the units of TIMEUNIT, useful for binned time-series.",
+        type_=float,
+    )
+
+
 # ======================================================================
 #  Copied from GADF so far, need to update:
 
 
-class CoordinateSystem(Header):
+class CoordinateSystemHeader(Header):
     """Coordinate system definition."""
 
     EQUINOX = HeaderCard(
@@ -83,30 +146,6 @@ class CoordinateSystem(Header):
         reference=CITE["fits_v4"],
         type_=str,
         allowed_values={"ICRS", "FK5"},
-    )
-
-
-class TimeDefinition(Header):
-    """Header keywords for the definition of time columns."""
-
-    # All keywords are required here. Add this to the headerschema when a table
-    # contains a time column
-
-    MJDREFI = HeaderCard(required=True, type_=int)
-    MJDREFF = HeaderCard(required=True, type_=float)
-    TIMEUNIT = HeaderCard(required=True, type_=str, allowed_values=["s"])
-    TIMESYS = HeaderCard(
-        required=True, type_=str, allowed_values=["UT1", "UTC", "TAI", "TT"]
-    )
-    TIMEREF = HeaderCard(
-        required=True,
-        type_=str,
-        allowed_values=[
-            "LOCAL",
-            "SOLARSYSTEM",
-            "HELIOCENTRIC",
-            "GEOCENTRIC",
-        ],
     )
 
 
