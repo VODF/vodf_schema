@@ -44,19 +44,23 @@ class EventList(BinaryTable):
         description="Event time of arrival, as an MET",
         unit=u.s,
         ucd="time",
+        reference=CITE["ogip_event_lists"],
     )
     RA = Double(
         description="Reconstructed Right Ascension of event point-of-origin.",
         unit=u.deg,
         ucd="pos.eq.ra;stat.fit",
+        reference=CITE["ogip_event_lists"],
     )
     DEC = Double(
         description="Reconstructed Declination of event point-of-origin",
         unit=u.deg,
         ucd="pos.eq.dec;stat.fit",
+        reference=CITE["ogip_event_lists"],
     )
     ENERGY = Double(
         description="Reconstructed event energy",
         unit=u.TeV,
         ucd="phys.energy;stat.fit",
+        reference=CITE["ogip_event_lists"],
     )
