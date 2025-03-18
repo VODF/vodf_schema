@@ -9,7 +9,13 @@ from astropy.table import Table
 from fits_schema import BinaryTable, Header, HeaderCard
 from fits_schema.schema_element import _REFERENCE_SET
 
-__all__ = ["display_bintable", "get_references", "headers_to_table", "columns_to_table"]
+__all__ = [
+    "display_bintable",
+    "display_header",
+    "get_references",
+    "headers_to_table",
+    "columns_to_table",
+]
 
 
 def get_references(as_dict=False):
@@ -90,6 +96,22 @@ def split_camel(name):
     )
 
 
+def display_header(header):
+    """Display a Header in a notebook, grouped by parents."""
+    from IPython.display import HTML, display
+
+    for header_group, cards in header.grouped_cards().items():
+        hdr_table = headers_to_table(header_group, cards.values())
+
+        if header_group.__name__ != "__header__":
+            display(
+                HTML(
+                    f"<h3>{split_camel(header_group.__name__)}</h3> <p><b>{hdr_table.meta['description']}</p>"
+                )
+            )
+        display(hdr_table)
+
+
 def display_bintable(hdu):
     """Display a bintable in a notebook."""
     from IPython.display import HTML, display
@@ -97,18 +119,7 @@ def display_bintable(hdu):
     display(HTML(f"<h1>{hdu.__name__}</h1>"))
     display(HTML(f"<p>{hdu.__doc__}</p>"))
     display(HTML("<h2>Headers</h2>"))
-
-    for header, cards in hdu.__header__.grouped_cards().items():
-        hdr_table = headers_to_table(header, cards.values())
-
-        if header.__name__ != "__header__":
-            display(
-                HTML(
-                    f"<h3>{split_camel(header.__name__)}</h3> <p><b>{hdr_table.meta['description']}</p>"
-                )
-            )
-        display(hdr_table)
-
+    display_header(hdu.__header__)
     display(HTML("<h2>Columns</h2>"))
     display(columns_to_table(hdu))
 
