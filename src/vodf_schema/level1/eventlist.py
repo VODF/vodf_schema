@@ -27,6 +27,16 @@ class EventList(BinaryTable):
         TemporalReferenceHeader,
     ):
         EXTNAME = HeaderCard(allowed_values=["event-list"], type_=str)
+        EXTLEVEL = HeaderCard(
+            type_=int,
+            description=(
+                "the level in a hierarchy of extension levels of the extension header containing it. "
+                "The value shall be 1for the highest level; levels with a higher value of this "
+                "keyword shall be subordinate to levels with a lower value"
+            ),
+            reference=Ref.fits_v4,
+            allowed_values=range(1, 10),
+        )
         HDUCLAS1 = HeaderCard(
             allowed_values="OGIP", description="OGIP-compatible", reference=Ref.ogip
         )

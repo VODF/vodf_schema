@@ -126,6 +126,85 @@ class TemporalReferenceHeader(Header):
     )
 
 
+class ObservationHeader(Header):
+    """Describes an observation."""
+
+    DATE_OBS = HeaderCard(
+        "DATE-OBS",
+        type_=str,
+        description="Human-readable observation start date, in UTC and ISO format",
+        examples=["2025-01-01 15:34:21"],
+        reference=Ref.fits_v4,
+    )
+    TELESCOP = HeaderCard(
+        type_=str,
+        description="Observatory or telescope used to make the observation",
+        examples=["CTAO", "Km3Net", "SWGO"],
+        reference=Ref.fits_v4,
+        ivoa_name="ObsCore.facility_name",
+    )
+    INSTRUME = HeaderCard(
+        type_=str,
+        required=False,
+        description="Subarray or instrument on the TELESCOP used to make the observation.",
+        reference=Ref.fits_v4,
+        ivoa_name="ObsCore.instrument_name",
+    )
+
+    OBS_ID = HeaderCard(ivoa_name="obs_id")
+
+    # TODO: missing other things from ObsCore/CTAO observation context
+
+
+class BibliographicHeader(Header):
+    """The creator of this data product."""
+
+    ORIGIN = HeaderCard(
+        description="Organization or institution responsible for this file.",
+        type_=str,
+        reference=Ref.fits_v4,
+        examples=["CTAO ERIC"],
+    )
+
+    # TODO: we also need the software version, etc.  Is CREATOR still useful?
+    CREATOR = HeaderCard(
+        description="Name of software used to create this file", reference=Ref.heasarc
+    )
+
+    REFERENC = HeaderCard(
+        required=False,
+        description=(
+            "reference where the data associated with the header are published. "
+            "It is recommended that either the 19-digit bibliographic identifier8 used in "
+            "the Astrophysics Data System bibliographic databases (http://adswww.harvard.edu/) "
+            "or the Digital Object Identifier (http://doi.org)"
+        ),
+        examples=["1994A&AS..103..135A", "’doi:10.1006/jmbi.1998.2354"],
+        reference=Ref.fits_v4,
+    )
+
+
+class FixityHeader(Header):
+    """Headers to ensure data integrity."""
+
+    DATASUM = HeaderCard(
+        type_=int,
+        description=(
+            "unsigned-integer value of the 32-bit ones’ complement checksum of the "
+            "data records in the HDU (i.e., excluding the header records)"
+        ),
+        reference=Ref.fits_v4,
+    )
+    CHECKSUM = HeaderCard(
+        type_=int,
+        description=(
+            "ASCII character string whose value forces the 32-bit ones’ "
+            "complement checksum accumulated over the entire FITS HDU to equal negative 0. "
+        ),
+        reference=Ref.fits_v4,
+    )
+
+
 # ======================================================================
 #  Copied from GADF so far, need to update:
 
@@ -164,23 +243,4 @@ class DataProductHeaders(Header):
         description="Date of HDU creation",
         type_=str,
         reference=Ref.fits_v4,
-    )
-
-
-class ObservationHeaders(Header):
-    """Describes an observation."""
-
-
-class CreatorHeaders(Header):
-    """The creator of this data product."""
-
-    ORIGIN = HeaderCard(
-        description="Organization or institution responsible for this file",
-        type_=str,
-        reference=Ref.fits_v4,
-        examples=["CTAO", "KM3Net"],
-    )
-
-    CREATOR = HeaderCard(
-        description="Name of software used to create this file", reference=Ref.heasarc
     )
