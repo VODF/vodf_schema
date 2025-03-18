@@ -11,7 +11,12 @@ from fits_schema import (
     Int64,
 )
 
-from ..metadata import SpatialReferenceHeader, TemporalReferenceHeader, VODFFormatHeader
+from ..metadata import (
+    ObservationHeader,
+    SpatialReferenceHeader,
+    TemporalReferenceHeader,
+    VODFFormatHeader,
+)
 from ..references import Ref
 
 __all__ = ["EventList"]
@@ -25,6 +30,7 @@ class EventList(BinaryTable):
         VODFFormatHeader,
         SpatialReferenceHeader,
         TemporalReferenceHeader,
+        ObservationHeader,
     ):
         EXTNAME = HeaderCard(allowed_values=["event-list"], type_=str)
         EXTLEVEL = HeaderCard(

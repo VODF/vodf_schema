@@ -17,3 +17,8 @@ class Ref:
         "I. George, A. Rots , K Mukai, Guidelines For Defining FITS "
         "Formats for Event Lists, OGIP Memo 94/003, 1994"
     )
+    heasarc_r11 = (
+        "HEASARC HFWG Recommendation R11, "
+        "On the Keywords and definitions relating to exposure-times and their corrections, "
+        "https://heasarc.gsfc.nasa.gov/docs/heasarc/ofwg/docs/ofwg_recomm/r11.html"
+    )

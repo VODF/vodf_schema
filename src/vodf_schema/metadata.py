@@ -13,6 +13,11 @@ URL = "https://PUT_VODF_DOCUMENTATION_URL_FOR_THIS_VERSION_HERE/"
 __all__ = [
     "VODFFormatHeader",
     "SpatialReferenceHeader",
+    "ObservationHeader",
+    "TemporalReferenceHeader",
+    "BibliographicHeader",
+    "FixityHeader",
+    "CoordinateSystemHeader",
 ]
 
 
@@ -129,13 +134,24 @@ class TemporalReferenceHeader(Header):
 class ObservationHeader(Header):
     """Describes an observation."""
 
+    OBS_ID = HeaderCard(ivoa_name="obs_id")  # TODO: define better
+
     DATE_OBS = HeaderCard(
         "DATE-OBS",
         type_=str,
-        description="Human-readable observation start date, in UTC and ISO format",
+        description="Human-readable observation start date/time, in UTC and ISO format.",
         examples=["2025-01-01 15:34:21"],
         reference=Ref.fits_v4,
     )
+
+    DATE_END = HeaderCard(
+        "DATE-END",
+        type_=str,
+        description="Human-readable observation stop date/time, in UTC and ISO format",
+        examples=["2025-01-01 15:44:21"],
+        reference=Ref.fits_v4,
+    )
+
     TELESCOP = HeaderCard(
         type_=str,
         description="Observatory or telescope used to make the observation",
@@ -151,9 +167,53 @@ class ObservationHeader(Header):
         ivoa_name="ObsCore.instrument_name",
     )
 
-    OBS_ID = HeaderCard(ivoa_name="obs_id")
+    TSTART = HeaderCard(
+        type_=float,
+        description="Precise start time of the observation in the units and scale defined by the temporal reference headers",
+        reference=Ref.ogip,
+    )
+    TSTOP = HeaderCard(
+        type_=float,
+        description="Precise stop time of the observation in the units and scale defined by the temporal reference headers",
+        reference=Ref.ogip,
+    )
 
-    # TODO: missing other things from ObsCore/CTAO observation context
+    # TODO: Should we separate these exposure headers into another Header?
+
+    ONTIME = HeaderCard(
+        description=(
+            "the total 'good' time (in seconds) on 'source'. If a 'Good Time Interval' (GTI) table is provided, "
+            "ONTIME should be calculated as the sum of those intervals. "
+            "Corrections for instrumental 'dead time' effects are NOT included"
+        ),
+        reference=Ref.heasarc_r11,
+    )
+    LIVETIME = HeaderCard(
+        type_=float,
+        unit="s",
+        description=(
+            "the total time (in seconds) on source, corrected for the total instrumental dead time effect. "
+            "The ratio LIVETIME/ONTIME therefore gives the dead time correction value."
+        ),
+        reference=Ref.heasarc_r11,
+    )
+    DEADC = HeaderCard(
+        required=False,
+        type_=float,
+        description="deadtime fraction",
+        reference=Ref.heasarc_r11,
+    )
+    EXPOSURE = HeaderCard(
+        required=False,
+        type_=float,
+        unit="s",
+        description=(
+            "is the total time (in seconds) on source, corrected for any relevant quantity used to calculate the corrected count rate. "
+            "The value can include correction which are not directly related with time "
+            "(e.g. collimation efficiency or vignetting). This keyword is a mean value when appropriate"
+        ),
+        reference=Ref.heasarc_r11,
+    )
 
 
 class BibliographicHeader(Header):
