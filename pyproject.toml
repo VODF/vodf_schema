@@ -17,7 +17,7 @@ authors = [
 requires-python = ">=3.10"
 dependencies = [
     "numpy",
-    "fits_schema > 0.5",
+    "fits_schema@git+https://github.com/VODF/fits_schema",
 ]
 
 # needed for setuptools_scm, we don"t define a static version
