@@ -1,5 +1,5 @@
 VODF Schema
-============================
+===========
 
 Schema for the Very-High-Energy Open Data Format (VODF) using the ``fits_template`` library.
 

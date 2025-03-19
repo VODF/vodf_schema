@@ -17,7 +17,7 @@ authors = [
 requires-python = ">=3.10"
 dependencies = [
     "numpy",
-    "fits_schema > 0.5",
+    "fits_schema@git+https://github.com/VODF/fits_schema",
 ]
 
 # needed for setuptools_scm, we don"t define a static version
@@ -38,15 +38,16 @@ exclude = ["vodf_schema._dev_version"]
 test = [
   "pytest",
   "pytest-cov",
-  "setuptools_scm[toml]",
+  "setuptools_scm",
 ]
 doc = [
   "sphinx",
   "numpydoc",
   "sphinx-changelog",
+  "pydata_sphinx_theme",
 ]
 dev = [
-  "setuptools_scm[toml]",
+  "setuptools_scm",
   "towncrier",
 ]
 
@@ -148,11 +149,12 @@ xfail_strict = true
 addopts = ["-ra", "--strict-config", "--strict-markers"]
 filterwarnings = [
     "error",
+    "default:.*is shallow and may cause errors:UserWarning",
     # this warning should not be turned into an error, will happen e.g. when
     # using wheels compiled against an older version of numpy then is used at runtime
     # left as warning as the other direction (compiled vs. newer, using older numpy) is
     # problematic
-    "default:numpy.ndarray size changed:RuntimeWarning"
+    "default:numpy.ndarray size changed:RuntimeWarning",
 ]
 
 
