@@ -44,6 +44,7 @@ doc = [
   "sphinx",
   "numpydoc",
   "sphinx-changelog",
+  "pydata_sphinx_theme",
 ]
 dev = [
   "setuptools_scm[toml]",
