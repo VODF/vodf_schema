@@ -17,7 +17,7 @@ authors = [
 requires-python = ">=3.10"
 dependencies = [
     "numpy",
-    "fits_schema > 0.5"
+    "fits_schema > 0.5",
 ]
 
 # needed for setuptools_scm, we don"t define a static version
@@ -38,6 +38,7 @@ exclude = ["vodf_schema._dev_version"]
 test = [
   "pytest",
   "pytest-cov",
+  "setuptools_scm[toml]",
 ]
 doc = [
   "sphinx",
@@ -45,7 +46,7 @@ doc = [
   "sphinx-changelog",
 ]
 dev = [
-  "setuptools_scm",
+  "setuptools_scm[toml]",
   "towncrier",
 ]
 
