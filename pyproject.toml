@@ -38,7 +38,7 @@ exclude = ["vodf_schema._dev_version"]
 test = [
   "pytest",
   "pytest-cov",
-  "setuptools_scm[toml]",
+  "setuptools_scm",
 ]
 doc = [
   "sphinx",
@@ -47,7 +47,7 @@ doc = [
   "pydata_sphinx_theme",
 ]
 dev = [
-  "setuptools_scm[toml]",
+  "setuptools_scm",
   "towncrier",
 ]
 
