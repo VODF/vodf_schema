@@ -1,7 +1,7 @@
-CTAO Python Project Template
+VODF Schema
 ============================
 
-This is the python project template.
+Schema for the Very-High-Energy Open Data Format (VODF) using the ``fits_template`` library.
 
 **Version**: |version| **Date**: |today|
 

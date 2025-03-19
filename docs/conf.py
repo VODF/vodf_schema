@@ -11,7 +11,7 @@ https://www.sphinx-doc.org/en/master/usage/configuration.html
 import vodf_schema
 
 project = "vodf_schema"
-copyright = "VODF, CTAO"  # TODO:  add other partners
+copyright = "VODF, CTAO, KM3Net, SWGO"  # TODO:  add other partners
 author = "VODF Lead Editor Team"
 version = vodf_schema.__version__
 # The full version, including alpha/beta/rc tags.

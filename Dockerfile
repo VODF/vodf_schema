@@ -9,7 +9,7 @@
 # we are using the official python image with just a version tag here
 # it comes with many tools needed to build and compile python packages
 # which increases it's size but is helpful for building
-FROM python:3.11 AS builder
+FROM python:3.13 AS builder
 
 # install git for setuptools_scm
 RUN apt update \
@@ -30,11 +30,11 @@ RUN python -m pip install --no-cache-dir build \
 # second stage, copy and install wheel
 # We are using the official python 3.11 image
 # as base image in the slim variant to reduce image size.
-FROM python:3.11-slim
+FROM python:3.13-slim
 COPY --from=builder /repo/dist /tmp/dist
 
 RUN python -m pip install --no-cache-dir /tmp/dist/* \
     && rm -r /tmp/dist
 
-RUN addgroup --system ctao && adduser --system --group ctao
-USER ctao
+RUN addgroup --system ctao && adduser --system --group vodf
+USER vodf
