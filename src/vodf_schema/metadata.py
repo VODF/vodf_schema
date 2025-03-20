@@ -8,7 +8,7 @@ from fits_schema import Header, HeaderCard
 from .references import Ref
 from .version import __version__ as vodf_version
 
-URL = "https://PUT_VODF_DOCUMENTATION_URL_FOR_THIS_VERSION_HERE/"
+URL = "https://vodf.readthedocs.org"
 
 __all__ = [
     "VODFFormatHeader",
@@ -34,13 +34,6 @@ class SpatialReferenceHeader(Header):
 
     This version of VODF supports only Earth-centered locations.
     """
-
-    TREFPOS = HeaderCard(
-        description="Code for the spatial location at which the observation time is valid",
-        reference=Ref.fits_v4,
-        type_=str,
-        allowed_values=["TOPOCENTER"],
-    )
 
     OBSGEO_B = HeaderCard(
         keyword="OBSGEO-B",
@@ -68,8 +61,35 @@ class SpatialReferenceHeader(Header):
     )
 
 
+# TODO: unify names of ground coordinate reference and sky coordinate reference.
+class CoordinateSystemHeader(Header):
+    """Coordinate system definition."""
+
+    EQUINOX = HeaderCard(
+        description="Coordinate epoch. Optional since implied by RADECSYS",
+        reference=Ref.fits_v4,
+        type_=float,
+        unit=u.yr,
+        allowed_values=2000.0,
+        required=False,
+    )
+    RADECSYS = HeaderCard(
+        description="Coordinate stellar reference frame",
+        reference=Ref.fits_v4,
+        type_=str,
+        allowed_values={"ICRS", "FK5"},
+    )
+
+
 class TemporalReferenceHeader(Header):
     """Defines the reference time, to which all time columns in the HDU are relative."""
+
+    TREFPOS = HeaderCard(
+        description="Code for the spatial location at which the observation time is valid",
+        reference=Ref.fits_v4,
+        type_=str,
+        allowed_values=["TOPOCENTER", "RELOCATABLE"],
+    )
 
     # TODO: do we really need to split MJDREF into (I/F) parts? Is that level of
     # precision required?
@@ -112,18 +132,6 @@ class TemporalReferenceHeader(Header):
         type_=str,
         allowed_values=["TT", "UTC", "UT1", "TAI", "GPS", "LOCAL"],
     )
-    TREFPOS = HeaderCard(
-        description="spatial location at which the observation time is valid.",
-        reference=Ref.fits_v4,
-        type_=str,
-        allowed_values=[
-            "TOPOCENTER",
-            "GEOCENTER",
-            "BARYCENTER",
-            "RELOCATABLE",
-            "CUSTOM",
-        ],
-    )
     TIMEDEL = HeaderCard(
         required=False,
         description="time resolution in the units of TIMEUNIT, useful for binned time-series.",
@@ -131,15 +139,21 @@ class TemporalReferenceHeader(Header):
     )
 
 
+# TODO: better name to avoid
 class ObservationHeader(Header):
     """Describes an observation."""
 
-    OBS_ID = HeaderCard(ivoa_name="obs_id")  # TODO: define better
-
-    DATE_OBS = HeaderCard(
-        "DATE-OBS",
+    OBS_ID = HeaderCard(
         type_=str,
-        description="Human-readable observation start date/time, in UTC and ISO format.",
+        description="unique ID of this observation, within a Data Release.",
+        ucd="",
+        ivoa_name="ObsCore.obs_id",
+    )
+
+    DATE_BEG = HeaderCard(
+        "DATE-BEG",
+        type_=str,
+        description="Human-readable observation start date/time, in the TIMESYS scale and ISO format.",
         examples=["2025-01-01 15:34:21"],
         reference=Ref.fits_v4,
     )
@@ -147,7 +161,7 @@ class ObservationHeader(Header):
     DATE_END = HeaderCard(
         "DATE-END",
         type_=str,
-        description="Human-readable observation stop date/time, in UTC and ISO format",
+        description="Human-readable observation stop date/time, in TIMESYS scale and ISO format",
         examples=["2025-01-01 15:44:21"],
         reference=Ref.fits_v4,
     )
@@ -159,6 +173,7 @@ class ObservationHeader(Header):
         reference=Ref.fits_v4,
         ivoa_name="ObsCore.facility_name",
     )
+
     INSTRUME = HeaderCard(
         type_=str,
         required=False,
@@ -170,16 +185,49 @@ class ObservationHeader(Header):
     TSTART = HeaderCard(
         type_=float,
         description="Precise start time of the observation in the units and scale defined by the temporal reference headers",
-        reference=Ref.ogip,
+        reference=Ref.fits_v4,
     )
     TSTOP = HeaderCard(
         type_=float,
         description="Precise stop time of the observation in the units and scale defined by the temporal reference headers",
-        reference=Ref.ogip,
+        reference=Ref.fits_v4,
     )
 
-    # TODO: Should we separate these exposure headers into another Header?
 
+class TemporalCoverageHeader(Header):
+    pass
+
+
+class SpectralCoverageHeader(Header):
+    """Spectral coverage of this observation."""
+
+    E_MIN = HeaderCard(
+        description="Estimated minimum energy of the observation, for findability purproses.",
+        unit="TeV",
+        ivoa_name="ObsCore.em_min",
+    )
+    E_MAX = HeaderCard(
+        description="Estimated maximum energy of the observation, for findability purproses.",
+        unit="TeV",
+        ivoa_name="ObsCore.em_max",
+    )
+
+
+class SpatialCoverageHeader(Header):
+    """Spatial Coverage."""
+
+    RA_OBS = HeaderCard(
+        description="Center position of the observation, or mean in time."
+    )
+    DEC_OBS = HeaderCard(
+        description="Center position of the observation, or mean in time."
+    )
+    FOV_OBS = HeaderCard()
+
+    pass
+
+
+class ExposureHeader(Header):
     ONTIME = HeaderCard(
         description=(
             "the total 'good' time (in seconds) on 'source'. If a 'Good Time Interval' (GTI) table is provided, "
@@ -188,7 +236,9 @@ class ObservationHeader(Header):
         ),
         reference=Ref.heasarc_r11,
     )
+
     LIVETIME = HeaderCard(
+        required=False,
         type_=float,
         unit="s",
         description=(
@@ -267,25 +317,6 @@ class FixityHeader(Header):
 
 # ======================================================================
 #  Copied from GADF so far, need to update:
-
-
-class CoordinateSystemHeader(Header):
-    """Coordinate system definition."""
-
-    EQUINOX = HeaderCard(
-        description="Coordinate epoch. Optional since implied by RADECSYS",
-        reference=Ref.fits_v4,
-        type_=float,
-        unit=u.yr,
-        allowed_values=2000.0,
-        required=False,
-    )
-    RADECSYS = HeaderCard(
-        description="Coordinate stellar reference frame",
-        reference=Ref.fits_v4,
-        type_=str,
-        allowed_values={"ICRS", "FK5"},
-    )
 
 
 class Object(Header):
