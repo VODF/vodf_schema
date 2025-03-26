@@ -4,5 +4,6 @@
 
 from .eventlist import EventList
 from .groups import IRFGroupingTable, ObservationGroupingTable
+from .observation import Observation
 
-__all__ = ["ObservationGroupingTable", "IRFGroupingTable", "EventList"]
+__all__ = ["ObservationGroupingTable", "IRFGroupingTable", "EventList", "Observation"]
