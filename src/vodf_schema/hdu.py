@@ -13,6 +13,10 @@ from fits_schema import (
 from .metadata import VODFFormatHeader
 from .references import Ref
 
+__all__ = [
+    "GroupingTable",
+]
+
 
 class GroupingTable(BinaryTable):
     """A FITS Hieararchical Grouping table."""
